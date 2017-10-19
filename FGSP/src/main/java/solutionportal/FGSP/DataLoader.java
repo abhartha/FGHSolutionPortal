@@ -11,8 +11,9 @@ import java.sql.Connection;
 import java.sql.Statement;
 import java.util.UUID;
 
+import solutionportal.FGSP.Constants;
+
 public class DataLoader {
-	final String pathOfExcel = "C://Users/bharthaa/Documents/Marco2Polo/marco2polo/Solution.xlsx";
 	public static Statement statement;
 
 	public Statement getDatabaseConnection(String db_connect_string, String db_userid, String db_password) {
@@ -38,7 +39,7 @@ public class DataLoader {
 
 	public void readDataFromExcel() {
 		try {
-			File f = new File(pathOfExcel);
+			File f = new File(Constants.PATHOFEXCEL);
 			XSSFWorkbook workbook = new XSSFWorkbook(new FileInputStream(f));
 			XSSFSheet sheet = workbook.getSheetAt(0);
 			Iterator<Row> rowIterator = sheet.iterator();
