@@ -206,6 +206,15 @@ public class LoadSolutionTable {
 		}
 	}
 
+	public void loadDataForLoadBOSolution(String solution_id, String bo_id) {
+		try {
+			StringBuffer queryString = new StringBuffer("insert into is_bo_solution(solutionid, name, surname, email, "
+					+ "site_location, country, departement, roche_id) values ('");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
 	public String checkUserInDB(String userid) {
 		try {
 			String queryString = "select id from contact where roche_id = '" + userid + "'";
