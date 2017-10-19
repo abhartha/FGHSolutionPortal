@@ -1,94 +1,18 @@
-package FGHSolutionPortal.FGSP;
+package solutionportal.FGSP;
 
-import java.io.*;
-import java.sql.DriverManager;
-import org.apache.poi.xssf.usermodel.XSSFSheet;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.apache.poi.ss.usermodel.*;
-import java.util.*;
-
-import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.UUID;
 
-public class DataLoader {
-	final String pathOfExcel = "C://Users/bharthaa/Documents/Marco2Polo/marco2polo/Solution.xlsx";
-	public static Statement statement;
+import org.apache.poi.ss.usermodel.Row;
 
-	public void dbConnect(String db_connect_string, String db_userid, String db_password) {
-		try {
-			Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-			Connection conn = DriverManager.getConnection(db_connect_string);
-			System.out.println("connected");
-			statement = conn.createStatement();
-			String queryString = "select * from sysobjects where type='u'";
-			ResultSet rs = statement.executeQuery(queryString);
-			while (rs.next()) {
-				System.out.println(rs.getString(1));
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+public class LoadSolutionTable {
+	public Statement statement;
+	
+	LoadSolutionTable(Statement s) {
+		this.statement = s;
 	}
-
-	public Statement getDatabaseConnection(String db_connect_string, String db_userid, String db_password) {
-		try {
-			Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-			Connection conn = DriverManager.getConnection(db_connect_string);
-			System.out.println("connected");
-			Statement statement = conn.createStatement();
-			return statement;
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-
-	public static void main(String[] args) {
-		DataLoader connServer = new DataLoader();
-		statement = connServer.getDatabaseConnection(
-				"jdbc:sqlserver://RMUMCSHSQL4\\INST3;databaseName=TST_FGHR_SolutionMap;integratedSecurity=true;", "",
-				"");
-		connServer.readDataFromExcel();
-	}
-
-	public void readDataFromExcel() {
-		try {
-			File f = new File(pathOfExcel);
-			XSSFWorkbook workbook = new XSSFWorkbook(new FileInputStream(f));
-			XSSFSheet sheet = workbook.getSheetAt(0);
-			Iterator<Row> rowIterator = sheet.iterator();
-
-			int rowNumber = 0;
-			boolean complete = false;
-			while (rowIterator.hasNext()) {
-				Row row = rowIterator.next();
-				rowNumber++;
-				if (rowNumber > 7) {
-					if (row.getCell(1) == null || row.getCell(1).getNumericCellValue() == 0) {
-						complete = true;
-						break;
-					}
-
-					String uniqueID = UUID.randomUUID().toString();
-
-//					loadDataInSolutionTable(uniqueID, row);
-//					loadDataForOwner(uniqueID, row);
-//					loadDataForDeputy(uniqueID, row);
-//					loadDataForBO(uniqueID, row);
-					System.out.println(checkUserInDB("ABHARTHA"));
-				}
-				if (complete) {
-					break;
-				}
-			}
-			workbook.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
+	
 	public void loadDataInSolutionTable(String id, Row row) {
 		String hpsm_id = row.getCell(2).getStringCellValue();
 		String name = row.getCell(3).getStringCellValue();
