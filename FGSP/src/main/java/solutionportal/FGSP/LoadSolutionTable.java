@@ -60,6 +60,7 @@ public class LoadSolutionTable {
 	public void loadDataForOwner(String solution_id, Row row) {
 
 		String owner_roche_id = row.getCell(5).getStringCellValue();
+		if (owner_roche_id.length() > 8) { return; }
 		String owner_id = checkUserInDB(owner_roche_id);
 		if (owner_id == null) {
 			String solution_owner = row.getCell(6).getStringCellValue();
@@ -105,11 +106,12 @@ public class LoadSolutionTable {
 			}
 		}
 		
-		
+		loadDataForSolutionContactRelation("is_owner_solution", solution_id, owner_id);
 	}
 
 	public void loadDataForDeputy(String id, Row row) {
 		String deputy_roche_id = row.getCell(11).getStringCellValue();
+		if (deputy_roche_id.length() > 8) { return; }
 		String deputy_id = checkUserInDB(deputy_roche_id);
 		if (deputy_id == null) {
 			String solution_deputy = row.getCell(12).getStringCellValue();
@@ -155,10 +157,13 @@ public class LoadSolutionTable {
 				e.printStackTrace();
 			}
 		}
+		
+		loadDataForSolutionContactRelation("is_deputy_solution", id, deputy_id);
 	}
 
 	public void loadDataForBO(String id, Row row) {
 		String bo_roche_id = row.getCell(17).getStringCellValue();
+		if (bo_roche_id.length() > 8) { return; }
 		String bo_id = checkUserInDB(bo_roche_id);
 		if (bo_id == null) {
 			String solution_bo = row.getCell(18).getStringCellValue();
@@ -204,12 +209,22 @@ public class LoadSolutionTable {
 				e.printStackTrace();
 			}
 		}
+		
+		loadDataForSolutionContactRelation("is_bo_solution", id, bo_id);
 	}
-
-	public void loadDataForLoadBOSolution(String solution_id, String bo_id) {
+	
+	public void loadDataForSolutionContactRelation(String tableName, String solution_id, String deputy_id) {
 		try {
-			StringBuffer queryString = new StringBuffer("insert into is_bo_solution(solutionid, name, surname, email, "
-					+ "site_location, country, departement, roche_id) values ('");
+			StringBuffer queryString = new StringBuffer("insert into ");
+			queryString.append(tableName);
+			queryString.append(" values('");
+			queryString.append(solution_id);
+			queryString.append("','");
+			queryString.append(deputy_id);
+			queryString.append("')");
+			
+			System.out.println(queryString.toString());
+			statement.execute(queryString.toString());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
