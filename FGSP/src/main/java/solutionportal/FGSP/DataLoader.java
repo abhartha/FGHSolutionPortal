@@ -58,11 +58,11 @@ public class DataLoader {
 					String uniqueID = UUID.randomUUID().toString();
 
 					LoadSolutionTable lst = new LoadSolutionTable(statement);
-					lst.loadDataInSolutionTable(uniqueID, row);
-					lst.loadDataForOwner(uniqueID, row);
-					lst.loadDataForDeputy(uniqueID, row);
-					lst.loadDataForBO(uniqueID, row);
-					//System.out.println(lst.checkUserInDB("ABHARTHA"));
+//					lst.loadDataInSolutionTable(uniqueID, row);
+//					lst.loadDataForOwner(uniqueID, row);
+//					lst.loadDataForDeputy(uniqueID, row);
+//					lst.loadDataForBO(uniqueID, row);
+					System.out.println(lst.checkUserInDB("ABHARTHA"));
 				}
 				if (complete) {
 					break;
