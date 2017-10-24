@@ -49,7 +49,7 @@ public class DataLoader {
 			while (rowIterator.hasNext()) {
 				Row row = rowIterator.next();
 				rowNumber++;
-				if (rowNumber > 7) {
+				if (rowNumber > 8) {
 					if (row.getCell(1) == null || row.getCell(1).getNumericCellValue() == 0) {
 						complete = true;
 						break;
@@ -62,12 +62,76 @@ public class DataLoader {
 					lst.loadDataForOwner(uniqueID, row);
 					lst.loadDataForDeputy(uniqueID, row);
 					lst.loadDataForBO(uniqueID, row);
-//					System.out.println(lst.checkUserInDB("ABHARTHA"));
+					// System.out.println(lst.checkUserInDB("RIZZID"));
 				}
 				if (complete) {
 					break;
 				}
 			}
+
+			XSSFSheet sheetComponents = workbook.getSheetAt(1);
+			Iterator<Row> rowIteratorComponents = sheetComponents.iterator();
+
+			int rowNumberComponents = 0;
+			boolean isCompleteComponent = false;
+			while (rowIteratorComponents.hasNext()) {
+				Row row = rowIteratorComponents.next();
+				rowNumberComponents++;
+				
+				System.out.println(row.getCell(28));
+				if (rowNumberComponents > 7) {
+					if ((row.getCell(3) == null || row.getCell(3).getNumericCellValue() == 0)) {
+						System.out.println("Already empty");
+						isCompleteComponent = true;
+						break;
+					}
+					if (row.getCell(28).toString().equals("APS")) {
+						String uniqueID = UUID.randomUUID().toString();
+						System.out.println(uniqueID);
+						LoadComponentTable lst = new LoadComponentTable(statement);
+						lst.loadDataInComponentTable(uniqueID, row, false);
+						lst.loadDataForOwner(uniqueID, row);
+						lst.loadDataForDeputy(uniqueID, row);
+						lst.loadDataForBO(uniqueID, row);
+					}
+
+				}
+				if (isCompleteComponent) {
+					break;
+				}
+			}
+
+			// int rowNumberModule = 0;
+			// boolean isCompleteModule = false;
+			// Iterator<Row> rowIteratorModule = sheetComponents.iterator();
+			// while (rowIteratorModule.hasNext()) {
+			// Row row = rowIteratorModule.next();
+			// rowNumberModule++;
+			// if (row.getCell(28).equals("APM")) {
+			//
+			// if (rowNumberModule > 7) {
+			// if ((row.getCell(3) == null ||
+			// row.getCell(3).getNumericCellValue() == 0)) {
+			// isCompleteModule = true;
+			// break;
+			// }
+			//
+			// String uniqueID = UUID.randomUUID().toString();
+			//
+			// LoadComponentTable lst = new LoadComponentTable(statement);
+			// lst.loadDataInComponentTable(uniqueID, row, true);
+			// lst.loadDataForOwner(uniqueID, row);
+			// lst.loadDataForDeputy(uniqueID, row);
+			// lst.loadDataForBO(uniqueID, row);
+			//
+			// }
+			//
+			// }
+			// if (isCompleteModule) {
+			// break;
+			// }
+			// }
+
 			workbook.close();
 		} catch (Exception e) {
 			e.printStackTrace();

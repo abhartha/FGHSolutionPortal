@@ -16,14 +16,14 @@ public class LoadSolutionTable {
 	public void loadDataInSolutionTable(String id, Row row) {
 		String hpsm_id = row.getCell(2).getStringCellValue();
 		String name = row.getCell(3).getStringCellValue();
-		String description = row.getCell(4).getStringCellValue();
+		String description = row.getCell(4).getStringCellValue().replace("'", "''");
 		String picture = row.getCell(32).getStringCellValue();
 		String servicenow_id = row.getCell(31).getStringCellValue();
 		String hpsm_name = row.getCell(23).getStringCellValue();
 		String hpsm_type = row.getCell(25).getStringCellValue();
 		String hpsm_status = row.getCell(26).getStringCellValue();
 		String hpsm_assigned_group = row.getCell(27).getStringCellValue();
-		String business_capabilitues = row.getCell(33).getStringCellValue();
+		String business_capabilitues = row.getCell(33).getStringCellValue().replace("'", "''");
 
 		try {
 			StringBuffer queryString = new StringBuffer("insert into solution values ('");
@@ -76,13 +76,13 @@ public class LoadSolutionTable {
 			String owner_country = row.getCell(9).getStringCellValue();
 			String owner_department = row.getCell(10).getStringCellValue();
 
-			String uniqueID = UUID.randomUUID().toString();
-			System.out.println(uniqueID);
+			owner_id = UUID.randomUUID().toString();
+			System.out.println(owner_id);
 
 			try {
 				StringBuffer queryString = new StringBuffer("insert into contact(id, name, surname, email, "
 						+ "site_location, country, departement, roche_id) values ('");
-				queryString.append(uniqueID);
+				queryString.append(owner_id);
 				queryString.append("','");
 				queryString.append(owner_first_name);
 				queryString.append("','");
@@ -128,13 +128,13 @@ public class LoadSolutionTable {
 			String deputy_country = row.getCell(15).getStringCellValue();
 			String deputy_department = row.getCell(16).getStringCellValue();
 
-			String uniqueID = UUID.randomUUID().toString();
-			System.out.println(uniqueID);
+			deputy_id = UUID.randomUUID().toString();
+			System.out.println(deputy_id);
 
 			try {
 				StringBuffer queryString = new StringBuffer("insert into contact(id, name, surname, email, "
 						+ "site_location, country, departement, roche_id) values ('");
-				queryString.append(uniqueID);
+				queryString.append(deputy_id);
 				queryString.append("','");
 				queryString.append(deputy_first_name);
 				queryString.append("','");
@@ -180,13 +180,13 @@ public class LoadSolutionTable {
 			String bo_country = row.getCell(21).getStringCellValue();
 			String bo_department = row.getCell(22).getStringCellValue();
 
-			String uniqueID = UUID.randomUUID().toString();
-			System.out.println(uniqueID);
+			bo_id = UUID.randomUUID().toString();
+			System.out.println(bo_id);
 
 			try {
 				StringBuffer queryString = new StringBuffer("insert into contact(id, name, surname, email, "
 						+ "site_location, country, departement, roche_id) values ('");
-				queryString.append(uniqueID);
+				queryString.append(bo_id);
 				queryString.append("','");
 				queryString.append(bo_first_name);
 				queryString.append("','");
@@ -235,9 +235,9 @@ public class LoadSolutionTable {
 			String queryString = "select id from contact where roche_id = '" + userid + "'";
 			System.out.println(queryString.toString());
 			ResultSet rs = statement.executeQuery(queryString);
-			if (rs.next()) {
+			if (rs.next())		
 				return rs.getString(1);
-			}
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
